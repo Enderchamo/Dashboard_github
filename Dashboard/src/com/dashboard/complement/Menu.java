@@ -4,6 +4,7 @@ package com.dashboard.complement;
 import com.dashboard.event.EventMenu;
 import com.dashboard.event.EventMenuSelected;
 import com.dashboard.model.ModelMenu;
+import com.dashboard.swing.MenuAnimation;
 import com.dashboard.swing.MenuItem;
 import com.dashboard.swing.scrollbar.ScrollBarCustom;
 import java.awt.Color;
@@ -76,16 +77,27 @@ public class Menu extends javax.swing.JPanel {
     }
     
     private void addMenu(ModelMenu menu) {
-        Panel.add(new MenuItem(menu, getEventMenu(), event, Panel.getComponentCount()));
+        Panel.add(new MenuItem(menu, getEventMenu(), event, Panel.getComponentCount()), "h 40!");
     }
     
     private EventMenu getEventMenu() {
         return new EventMenu() {
             @Override
             public boolean menuPressed(Component com, boolean open) {
-                System.out.println("Menu press");
-                
-                return true;
+                if (enableMenu) {
+                    
+                    if (showMenu) {
+                        if (open) {
+                            new MenuAnimation(layout, com).openMenu();
+                        } else {
+                            new MenuAnimation(layout, com).closeMenu();
+                        }
+                        return true;
+                    } else {
+                        System.out.println("Show pop up menu");
+                    }
+                }
+                return false;
             }
         };
     }
@@ -127,8 +139,9 @@ public class Menu extends javax.swing.JPanel {
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(126, Short.MAX_VALUE)
-                .addComponent(sp, javax.swing.GroupLayout.PREFERRED_SIZE, 491, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(126, 126, 126)
+                .addComponent(sp, javax.swing.GroupLayout.PREFERRED_SIZE, 491, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(38, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
